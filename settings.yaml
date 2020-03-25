@@ -1,0 +1,37 @@
+SessionsService:
+    Db:
+        LogsConnString:
+            settings-key: SessionsService-Db-LogsConnString
+            types:
+            - AzureTableStorage
+    RabbitMq:
+        RabbitMqConnString:
+          settings-key: UserManagementRabbitMQ
+          types:
+          - RabbitMq
+        SessionCreatedExchangeName:
+          settings-key: SessionsService-RabbitMq-SessionCreatedExchangeName
+        SessionEndedExchangeName:
+          settings-key: SessionsService-RabbitMq-SessionEndedExchangeName
+    Redis:
+        ConnString:
+            settings-key: SessionsService-Redis-ConnString
+            types:
+            - Redis
+        InstanceName:
+            settings-key: SessionsService-Redis-InstanceName
+        SessionIdleTimeout:
+            settings-key: SessionsService-Redis-SessionIdleTimeout
+        PhoneKeyTtl:
+            settings-key: SessionsService-Redis-PhoneKeyTtl
+SlackNotifications:
+    AzureQueue:
+        ConnectionString:
+            settings-key: SlackNotificationsConnString
+            types:
+                - AzureTableStorage
+        QueueName:
+            settings-key: SlackQueueName
+MonitoringServiceClient:
+    MonitoringServiceUrl:
+        settings-key: MonitoringServiceUrl
