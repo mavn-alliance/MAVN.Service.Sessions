@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <Copyright>@2019 - Lykke</Copyright>
+
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Lykke.Common" Version="7.5.0" />
+    <PackageReference Include="Lykke.HttpClientGenerator" Version="2.5.0" />
+    <PackageReference Include="Lykke.SettingsReader" Version="5.2.0" />
+    <PackageReference Include="Refit" Version="4.6.107" />
+  </ItemGroup>
+</Project>
