@@ -29,7 +29,7 @@ namespace MAVN.Service.Sessions.Client
                 throw new ArgumentException("Value cannot be null or whitespace.",
                     nameof(SessionsServiceClientSettings.ServiceUrl));
 
-            var clientBuilder = HttpClientGenerator.HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
+            var clientBuilder = HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
                 .WithoutCaching()
                 .WithoutRetries()
                 .WithAdditionalCallsWrapper(new ExceptionHandlerCallsWrapper());
