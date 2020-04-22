@@ -12,7 +12,7 @@ env:
   RELEASE_SERVICE: true
   
   CLIENT_PROJECT: ./client/MAVN.Service.Sessions.Client/MAVN.Service.Sessions.Client.csproj
-  CONTRACT_PROJECT: ./contract/MAVN.Service.Sessions.Contract/MAVN.Service.Sessions.Contract.csproj
+  CONTRACT_PROJECT: ./contract/MAVN.Service.Sessions.Contracts/MAVN.Service.Sessions.Contracts.csproj
   JOB_DOCKER_IMAGE:
   JOB_PROJECT:
   SERVICE_DOCKER_IMAGE: sessions-service
