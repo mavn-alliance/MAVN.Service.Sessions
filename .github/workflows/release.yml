@@ -51,7 +51,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 2.2.207
+          dotnet-version: 3.1.302
       - name: Install dependencies
         run: dotnet restore
       - name: Build solution
@@ -61,21 +61,21 @@ jobs:
       - name: Build docker image for a job
         if: env.RELEASE_JOB == 'true'
         run: |
-          dotnet publish $JOB_PROJECT --configuration Release --output ../../docker/job --no-build /p:Version=$VERSION
+          dotnet publish $JOB_PROJECT --configuration Release --output ./docker/job --no-build /p:Version=$VERSION
           docker build --tag openmavn/$JOB_DOCKER_IMAGE:$VERSION ./docker/job
       - name: Build docker image for a service
         if: env.RELEASE_SERVICE == 'true'
         run: |
-          dotnet publish $SERVICE_PROJECT --configuration Release --output ../../docker/service --no-build /p:Version=$VERSION
+          dotnet publish $SERVICE_PROJECT --configuration Release --output ./docker/service --no-build /p:Version=$VERSION
           docker build --tag openmavn/$SERVICE_DOCKER_IMAGE:$VERSION ./docker/service
       
       # Pack NuGet packages
       - name: Pack client NuGet package
         if: env.RELEASE_CLIENT == 'true'
-        run: dotnet pack $CLIENT_PROJECT --configuration Release --output ../../packages --no-build --include-symbols --include-source /p:SymbolPackageFormat=snupkg /p:Version=$VERSION
+        run: dotnet pack $CLIENT_PROJECT --configuration Release --output ./packages --no-build --include-symbols --include-source /p:SymbolPackageFormat=snupkg /p:Version=$VERSION
       - name: Pack contract NuGet package
         if: env.RELEASE_CONTRACT == 'true'
-        run: dotnet pack $CONTRACT_PROJECT --configuration Release --output ../../packages --no-build --include-symbols --include-source /p:SymbolPackageFormat=snupkg /p:Version=$VERSION
+        run: dotnet pack $CONTRACT_PROJECT --configuration Release --output ./packages --no-build --include-symbols --include-source /p:SymbolPackageFormat=snupkg /p:Version=$VERSION
       
       # Push Docker Images
       - name: Push job docker image

@@ -1,12 +1,15 @@
-using System;
 using System.Text.RegularExpressions;
+using Autofac;
 using AutoMapper;
 using JetBrains.Annotations;
 using Lykke.Logs.Loggers.LykkeSanitizing;
 using Lykke.Sdk;
+using Lykke.SettingsReader;
 using MAVN.Service.Sessions.MappingProfiles;
 using MAVN.Service.Sessions.Settings;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MAVN.Service.Sessions
@@ -19,10 +22,13 @@ namespace MAVN.Service.Sessions
             ApiVersion = "v1"
         };
 
+        private IConfigurationRoot _configurationRoot;
+        private IReloadingManager<AppSettings> _settingsManager;
+
         [UsedImplicitly]
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            return services.BuildServiceProvider<AppSettings>(options =>
+            (_configurationRoot, _settingsManager) = services.BuildServiceProvider<AppSettings>(options =>
             {
                 options.Extend = (serviceCollection, settings) =>
                 {
@@ -53,13 +59,23 @@ namespace MAVN.Service.Sessions
             });
         }
 
+        [UsedImplicitly]
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.ConfigureLykkeContainer(
+                _configurationRoot,
+                _settingsManager);
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IMapper mapper)
+        public void Configure(
+            IApplicationBuilder app,
+            IApplicationLifetime appLifetime,
+            IMapper mapper)
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            app.UseLykkeConfiguration(options => { options.SwaggerOptions = _swaggerOptions; });
+            app.UseLykkeConfiguration(appLifetime, options => { options.SwaggerOptions = _swaggerOptions; });
         }
     }
 }
