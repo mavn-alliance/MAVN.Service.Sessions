@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:3.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY . .
 ENTRYPOINT ["dotnet", "MAVN.Service.Sessions.dll"]
