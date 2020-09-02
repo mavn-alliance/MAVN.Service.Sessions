@@ -33,7 +33,7 @@ namespace MAVN.Service.Sessions.Tests
                 "Sessions",
                 TimeSpan.FromMinutes(1),
                 TimeSpan.FromMinutes(5),
-                EmptyLogFactory.Instance, 
+                LogFactory.Create(),
                 _startedPublisher,
                 _endedPublisher,
                 2);
@@ -114,7 +114,7 @@ namespace MAVN.Service.Sessions.Tests
                 "Sessions",
                 TimeSpan.FromSeconds(1),
                 TimeSpan.FromMinutes(5),
-                EmptyLogFactory.Instance,
+                LogFactory.Create(),
                 _startedPublisher,
                 _endedPublisher);
             var user1 = Guid.NewGuid().ToString();
@@ -137,7 +137,7 @@ namespace MAVN.Service.Sessions.Tests
                 "Sessions",
                 TimeSpan.FromSeconds(1),
                 TimeSpan.FromMinutes(5),
-                EmptyLogFactory.Instance,
+                LogFactory.Create(),
                 _startedPublisher,
                 _endedPublisher);
             var session = await _client.Authenticate(Guid.NewGuid().ToString(), "SomeInfo");
@@ -156,7 +156,7 @@ namespace MAVN.Service.Sessions.Tests
                 "Sessions",
                 TimeSpan.FromSeconds(1),
                 TimeSpan.FromMinutes(5),
-                EmptyLogFactory.Instance,
+                LogFactory.Create(),
                 _startedPublisher,
                 _endedPublisher);
             var session = await _client.Authenticate(Guid.NewGuid().ToString(), "SomeInfo");
@@ -180,7 +180,7 @@ namespace MAVN.Service.Sessions.Tests
                 "Sessions",
                 TimeSpan.FromSeconds(1),
                 TimeSpan.FromMinutes(5),
-                EmptyLogFactory.Instance,
+                LogFactory.Create(),
                 _startedPublisher,
                 _endedPublisher);
             var session = await _client.Authenticate(Guid.NewGuid().ToString(), "SomeInfo");

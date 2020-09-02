@@ -2,15 +2,15 @@ using System.Text.RegularExpressions;
 using Autofac;
 using AutoMapper;
 using JetBrains.Annotations;
-using Lykke.Logs.Loggers.LykkeSanitizing;
+using Lykke.Logs.LykkeSanitizing;
 using Lykke.Sdk;
 using Lykke.SettingsReader;
 using MAVN.Service.Sessions.MappingProfiles;
 using MAVN.Service.Sessions.Settings;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace MAVN.Service.Sessions
 {
@@ -28,6 +28,8 @@ namespace MAVN.Service.Sessions
         [UsedImplicitly]
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSanitizingFilter(new Regex("[a-z0-9]{64}", RegexOptions.Compiled), "[SessionToken]");
+
             (_configurationRoot, _settingsManager) = services.BuildServiceProvider<AppSettings>(options =>
             {
                 options.Extend = (serviceCollection, settings) =>
@@ -39,22 +41,8 @@ namespace MAVN.Service.Sessions
 
                 options.Logs = logs =>
                 {
-                    logs.AzureTableName = "LogSession";
-                    logs.AzureTableConnectionStringResolver =
-                        settings => settings.SessionsService.Db.LogsConnString;
-
-                    logs.Extended = logBuilder =>
-                    {
-                        logBuilder.ConfigureConsole = consoleLoggerOptions =>
-                        {
-                            // TODO: remove when sanitizing would be available in scopes.
-                            // For now sessionToken is exposed in RequestPath if scopes are enabled.
-                            consoleLoggerOptions.IncludeScopes = false;
-                        };
-
-                        // sessionToken filter.
-                        logBuilder.AddSanitizingFilter(new Regex("[a-z0-9]{64}", RegexOptions.Compiled), "[SessionToken]");
-                    };
+                    logs.LogsTableName = "LogSession";
+                    logs.AzureTableConnectionStringResolver = settings => settings.SessionsService.Db.LogsConnString;
                 };
             });
         }
@@ -70,7 +58,7 @@ namespace MAVN.Service.Sessions
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app,
-            IApplicationLifetime appLifetime,
+            IHostApplicationLifetime appLifetime,
             IMapper mapper)
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
